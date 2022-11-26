@@ -7,30 +7,27 @@ import usersRouter from "./routes/users";
 import "reflect-metadata";
 import db from "./config/firebase";
 import { collection, getDocs } from "firebase/firestore";
-
 var app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-
+const coll = await getDocs(collection(db, "users"));
+console.log("hana jebt lik", coll);
 // catch 404 and forward to error handler
-app.use(function (req: any, res: any, next: any) {
-  next(createError(404));
+app.use(function (req, res, next) {
+    next(createError(404));
 });
-
 // error handler
-app.use(function (err: any, req: any, res: any, next: any) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
 });
-
 export default app;
+//# sourceMappingURL=app.js.map
